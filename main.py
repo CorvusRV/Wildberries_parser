@@ -23,7 +23,7 @@ class ParserWB:
         count_goods = response_json['data']['total']
 
         if count_goods < 6000:
-            print(f"Всего найдено {count_goods} товаров, будут загружены данные о всех товарах")
+            print(f"Всего найдено {count_goods} товаров, будут получены данные о всех товарах")
             self.counts_of_sessions = count_goods // 100 + (0 if count_goods % 100 == 0 else 1)
         else:
             print(f"Всего найдено {count_goods} товаров. Будут получены данные о 6000 самых популярных товаров")
@@ -35,18 +35,18 @@ class ParserWB:
             return
         for product in json['data']['products']:
             self.product_list.append({
-                'Наименование': product['name'],
+                'name': product['name'],
                 'id': product['id'],
-                'Цена': int(product['salePriceU']) / 100,
-                'Цена до скидки': int(product['priceU']) / 100,
-                'Скидка': product['sale'],
-                'Бренд': product['brand'],
-                'id бренда': product['brandId'],
-                'id продавца': product['supplierId'],
+                'price': int(product['salePriceU']) / 100,
+                'starting price': int(product['priceU']) / 100,
+                'sale': product['sale'],
+                'brand': product['brand'],
+                'brand id': product['brandId'],
+                'supplier id': product['supplierId'],
                 'feedbacks': product['feedbacks'],
                 'rating': product['rating'],
-                'ссылка на товар': f'https://www.wildberries.ru/catalog/{product["id"]}/detail.aspx',
-                'ссылка на продавца': f'https://www.wildberries.ru/seller/{product["supplierId"]}'
+                'product url': f'https://www.wildberries.ru/catalog/{product["id"]}/detail.aspx',
+                'supplier url': f'https://www.wildberries.ru/seller/{product["supplierId"]}'
             })
 
     async def get_product_data_from_json(self, session, page):
@@ -90,3 +90,4 @@ if __name__ == '__main__':
     print("Идет обработка...")
     ParserWB(query).start_asynchronous_parsing()
     print("Обработка завершена")
+
